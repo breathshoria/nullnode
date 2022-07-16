@@ -1,25 +1,47 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import {
+  Routes,
+  Route, MemoryRouter,
+} from "react-router-dom";
+import React from "react";
+import Home from "./components/Home"
+import Settings from "./components/settings/Settings"
+import Nav from "./components/Nav";
+import About from "./components/About";
+import Projects from "./components/projects/Projects";
+import Register from "./components/authentication/Register";
+import Login from "./components/authentication/Login";
+import useAuth from "./hooks/useAuth";
+import RequireAuth from "./components/helpers/RequireAuth";
+import Loader from "./components/helpers/Loader";
 
-function App() {
+const App = () => {
+  const auth = useAuth()
+
+  if(auth?.isAuthChecking) {
+    return(
+        <div className={'bg-gray-800 min-h-screen flex items-center justify-center'}>
+          <Loader className={'w-10 h-10'}></Loader>
+        </div>
+    )
+  }
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+      <div className="bg-gray-800 h-full text-white">
+        <MemoryRouter>
+          <Nav />
+          <Routes>
+            <Route path="/" element={<Home/>}/>
+            <Route path="/projects" element={<Projects/>}/>
+            <Route path="/about" element={<About/>}/>
+            <Route path='/login' element={<Login/>}/>
+            <Route path='/register' element={<Register/>}/>
+            <Route path="/settings" element={
+              <RequireAuth>
+                <Settings/>
+              </RequireAuth>
+            }/>
+          </Routes>
+        </MemoryRouter>
+      </div>
   );
 }
 
