@@ -25,11 +25,11 @@ const Login = () => {
     }
 
     return(
-        <div className={'min-h-screen flex flex-1 flex-col items-center mt-5'}>
+        <div className={'min-h-screen pb-12 flex flex-1 flex-col items-center justify-center'}>
             {auth?.error && <Error error={auth?.error}/>}
-            <form className={'`w-1/2'}>
+            <form className={'w-2/3 sm:w-1/3'}>
                 <label>
-                    <span className={'text-md'}>Username</span>
+                    <span className={'text-xl sm:text-base'}>Username</span>
                     <input
                         className={'mt-2 h-10 pl-2 bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 mb-1'}
                         type="text"
@@ -39,7 +39,7 @@ const Login = () => {
                     />
                 </label>
                 <label>
-                    <span className={'text-md'}>Password</span>
+                    <span className={'text-xl sm:text-base'}>Password</span>
                     <input
                         className={'mt-2 h-10 pl-2 bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'}
                         value={credentials.password}
@@ -49,11 +49,11 @@ const Login = () => {
                     />
                 </label>
                 <button
-                    className="mt-3 bg-gray-700 text-white px-3 py-2 h-10 rounded-md text-sm font-medium flex items-center"
+                    className="mt-5 bg-gray-700 text-white p-5 h-10 rounded-md font-medium flex items-center"
                     onClick={handleSubmit}
                 >
                     {auth?.isLoading && <Loader className={'w-5 h-5'}/>}
-                    <span>Login</span>
+                    <span className={'text-xl sm:text-base'}>Login</span>
                 </button>
             </form>
         </div>
