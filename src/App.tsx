@@ -4,7 +4,6 @@ import {
 } from "react-router-dom";
 import React from "react";
 import Home from "./components/Home"
-import Settings from "./components/settings/Settings"
 import Nav from "./components/Nav";
 import About from "./components/About";
 import Projects from "./components/projects/Projects";
@@ -34,11 +33,6 @@ const App = () => {
             <Route path="/about" element={<About/>}/>
             <Route path='/login' element={<Login/>}/>
             <Route path='/register' element={<Register/>}/>
-            <Route path="/settings" element={
-              <RequireAuth>
-                <Settings/>
-              </RequireAuth>
-            }/>
           </Routes>
         </MemoryRouter>
       </div>
