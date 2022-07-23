@@ -36,7 +36,7 @@ export const useAuthProvide = () => {
         try {
             setError(false)
             setLoading(true)
-            await api.post(`/users/register`, userInput)
+            await api.post(`/users/signup`, userInput)
             setLoading(false)
             navigate()
         } catch (e: any) {
