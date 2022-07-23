@@ -1,114 +1,177 @@
 import {
-  Link,
-  useNavigate,
+    Link,
+    useNavigate,
+    useLocation
 } from "react-router-dom";
-import { Disclosure, Menu, Transition } from '@headlessui/react'
-import React, {ClassType, Component, Fragment, ReactElement} from 'react';
+import {Disclosure, Menu, Transition} from '@headlessui/react'
+import React, {useRef, Fragment} from 'react'
 import useAuth from "../hooks/useAuth";
 
 const navigation = [
-  { name: 'Home', href: '/', current: true, authRequired: false},
-  { name: 'Projects', href: '/projects', current: true, authRequired: false},
-  { name: 'About', href: '/about', current: true, authRequired: false },
+    {name: 'Home', href: '/', authRequired: false},
+    {name: 'Projects', href: '/projects', authRequired: false},
+    {name: 'About', href: '/about', authRequired: false},
 ]
 
 
 function classNames(...classes: string[]) {
-  return classes.filter(Boolean).join(' ')
+    return classes.filter(Boolean).join(' ')
 }
+
 const Nav = () => {
-  const auth = useAuth();
-  const navigate = useNavigate();
+    const auth = useAuth();
+    const navigate = useNavigate();
+    const currentPath = useLocation().pathname;
+    const menuDropdown = useRef<HTMLDivElement>(null)
+    const menuButton = useRef<HTMLButtonElement>(null)
+    const openMenu = () => {
+        if (menuDropdown.current?.classList.contains('opacity-100')) {
+            setTimeout(() => {
+                menuDropdown.current?.classList.add('hidden');
+            }, 200);
+            menuDropdown.current?.classList.add('opacity-0');
+            menuDropdown.current?.classList.remove('opacity-100');
+            return;
+        }
+        menuDropdown.current?.classList.remove('hidden')
+        setTimeout(() => {
+            menuDropdown.current?.classList.remove('opacity-0');
+            menuDropdown.current?.classList.add('opacity-100');
+        }, 5)
+        menuButton.current?.addEventListener('blur', () => {
+            setTimeout(() => {
+                menuDropdown.current?.classList.add('hidden');
+            }, 200);
+            menuDropdown.current?.classList.add('opacity-0');
+            menuDropdown.current?.classList.remove('opacity-100')
+        })
+    }
     return (
-          <Disclosure as="nav" className="bg-gray-900 rounded-b-lg">
+        <Disclosure as="nav" className="bg-gray-900 rounded-b-lg">
             <div className="max-w-full mx-auto px-2 sm:px-6 lg:px-8">
-              <div className="relative flex items-center justify-between h-14">
-                <div className="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
-                  <div className="flex items-center">
-                    <Link to="/">
-                    <span className="text-neutral-100 text-md font-mono">
+                <div
+                    className="hidden transition-opacity duration-200 opacity-0 ease-in-out absolute top-14 left-1 sm:invisible"
+                    ref={menuDropdown}>
+                    <div className="flex flex-col p-2 border w-56 h-56 shadow-black shadow-sm rounded-b-md border-gray-900 bg-gray-900">
+                        {navigation
+                            .filter((item) => !item.authRequired || (item.authRequired === auth?.isAuthenticated))
+                            .map((item) => (
+                                <Link
+                                    to={item.href}
+                                    key={item.name}
+                                    className={classNames(
+                                        currentPath === item.href
+                                            ? "bg-sky-700 text-white"
+                                            : "text-gray-300 bg-gray-900 hover:text-white",
+                                        "px-3 py-2 inline-block text-sm hover:bg-sky-700"
+                                    )}
+                                    aria-current={currentPath === item.href ? "page" : undefined}
+                                >
+                                    {item.name}
+                                </Link>
+                            ))}
+                        {!auth?.isAuthenticated && <div>
+                            <Link to={'/login'}>
+                                <span
+                                    className={'px-3 py-2 block text-sm text-gray-300 hover:bg-sky-700'}>Sign In</span>
+                            </Link>
+                            <Link to={'/register'}>
+                                <span
+                                    className={'px-3 py-2 block text-sm text-gray-300 hover:bg-sky-700'}>Sign Up</span>
+                            </Link>
+                        </div>}
+                    </div>
+                </div>
+                <div className="flex justify-between justify-items-center items-center h-14">
+                    <div className={'pl-1 sm:hidden'}>
+                        <button ref={menuButton} onClick={openMenu}>
+                            <div className="space-y-1">
+                                <div className="w-5 h-0.5 bg-gray-200"/>
+                                <div className="w-5 h-0.5 bg-gray-200"/>
+                            </div>
+                        </button>
+                    </div>
+                    <div className="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
+                        <div className="self-center">
+                            <Link to="/">
+                    <span className="text-neutral-100 text-base font-mono">
                       nullnode
                     </span>
-                    </Link>
-                    <span className={'border-r-2 border-gray-200 h-full ml-4'}></span>
-                  </div>
-                  <div className="hidden sm:block sm:ml-6">
-                    <div className="flex space-x-4">
-                      {navigation
-                          .filter((item) => !item.authRequired || (item.authRequired === auth?.isAuthenticated))
-                          .map((item) => (
-                              <Link
-                                  to={item.href}
-                                  key={item.name}
-                                  className={classNames(
-                                      item.current
-                                          ? "bg-gray-800 text-white"
-                                          : "text-gray-300 hover:bg-sky-700 hover:text-white",
-                                      "px-3 py-2 rounded-md text-sm font-medium"
-                                  )}
-                                  aria-current={item.current ? "page" : undefined}
-                              >
-                                {item.name}
-                              </Link>
-                          ))}
+                            </Link>
+                        </div>
+                        <div className="hidden sm:block sm:ml-6">
+                            <div className="flex space-x-4">
+                                {navigation
+                                    .filter((item) => !item.authRequired || (item.authRequired === auth?.isAuthenticated))
+                                    .map((item) => (
+                                        <Link
+                                            to={item.href}
+                                            key={item.name}
+                                            className={classNames(
+                                                currentPath === item.href
+                                                    ? "bg-sky-700 text-white"
+                                                    : "text-gray-300 bg-gray-800 hover:text-white",
+                                                "px-3 py-2 rounded-md text-sm font-medium hover:bg-sky-700"
+                                            )}
+                                            aria-current={currentPath === item.href ? "page" : undefined}
+                                        >
+                                            {item.name}
+                                        </Link>
+                                    ))}
+                            </div>
+                        </div>
                     </div>
-                  </div>
+                    {!auth?.isAuthenticated && <div className={"hidden sm:flex sm:gap-2"}>
+                        <Link to={'/login'}>
+                            <span className={'text-sm hover:text-sky-700'}>Sign In</span>
+                        </Link>
+                        <Link to={'/register'}>
+                            <span className={'text-sm hover:text-sky-700'}>Sign Up</span>
+                        </Link>
+                    </div>}
+                    {auth?.isAuthenticated && <Menu as="div" className="relative">
+                        <Menu.Button
+                            className="bg-gray-800 px-3 py-2 text-sm rounded-md hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
+                            {auth!.user}
+                        </Menu.Button>
+                        <Transition
+                            as={Fragment}
+                            enter="transition ease-out duration-100"
+                            enterFrom="transform opacity-0 scale-95"
+                            enterTo="transform opacity-100 scale-100"
+                            leave="transition ease-in duration-75"
+                            leaveFrom="transform opacity-100 scale-100"
+                            leaveTo="transform opacity-0 scale-95"
+                        >
+                            <Menu.Items
+                                className="origin-top-right absolute p-2 right-0 mt-2 w-fit rounded-md shadow-lg bg-gray-900  focus:outline-none">
+                                <Menu.Item>
+                                        <button
+                                            ref=""
+                                            onClick={() => navigate('/profile')}
+                                            className={classNames('block w-20 py-2 text-sm text-white hover:bg-sky-700')}
+                                        >
+                                            <span className={'text-sm'}>Profile</span>
+                                        </button>
+                                </Menu.Item>
+                                <Menu.Item>
+
+                                        <button
+                                            ref=""
+                                            onClick={() => auth!.logout(() => navigate('/'))}
+                                            className={classNames( 'block w-20 py-2 text-sm text-white hover:bg-sky-700')}
+                                        >
+                                            <span className={'text-sm'}>Sign out</span>
+                                        </button>
+
+                                </Menu.Item>
+                            </Menu.Items>
+                        </Transition>
+                    </Menu>
+                    }
                 </div>
-                {!auth!.isAuthenticated && <div className={"justify-end flex flex-row gap-2"}>
-                  <Link to={'/login'}>
-                    <span className={'text-sm'}>Sign In</span>
-                  </Link>
-                  <Link to={'/register'}>
-                    <span className={'text-sm'}>Sign Up</span>
-                  </Link>
-                </div>}
-                {auth!.isAuthenticated && <Menu as="div" className="ml-3 relative">
-                  <div>
-                    <Menu.Button
-                        className="bg-gray-800 flex px-3 py-2 text-sm rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
-                      {auth!.user}
-                    </Menu.Button>
-                  </div>
-                  <Transition
-                      as={Fragment}
-                      enter="transition ease-out duration-100"
-                      enterFrom="transform opacity-0 scale-95"
-                      enterTo="transform opacity-100 scale-100"
-                      leave="transition ease-in duration-75"
-                      leaveFrom="transform opacity-100 scale-100"
-                      leaveTo="transform opacity-0 scale-95"
-                  >
-                    <Menu.Items
-                        className="origin-top-right absolute right-0 mt-2 w-20 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
-                      <Menu.Item>
-                        {({active}) => (
-                            <button
-                                ref=""
-                                onClick={() => navigate('/settings')}
-                                className={classNames(active ? 'bg-gray-100' : '', 'block w-20 py-2 text-sm text-gray-700')}
-                            >
-                              <span className={'text-sm'}>Settings</span>
-                            </button>
-                        )}
-                      </Menu.Item>
-                      <Menu.Item>
-                        {({active}) => (
-                            <button
-                                ref=""
-                                onClick={() => auth!.logout(() => navigate('/'))}
-                                className={classNames(active ? 'bg-gray-100' : '', 'block w-20 py-2 text-sm text-gray-700')}
-                            >
-                              <span className={'text-sm'}>Sign out</span>
-                            </button>
-                        )}
-                      </Menu.Item>
-                    </Menu.Items>
-                  </Transition>
-                </Menu>
-                }
-              </div>
             </div>
-          </Disclosure>
+        </Disclosure>
     );
 }
 
