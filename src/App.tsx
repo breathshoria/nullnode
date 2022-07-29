@@ -12,6 +12,7 @@ import Login from "./components/authentication/Login";
 import useAuth from "./hooks/useAuth";
 import RequireAuth from "./components/helpers/RequireAuth";
 import Loader from "./components/helpers/Loader";
+import Project from "./components/projects/Project";
 
 const App = () => {
   const auth = useAuth()
@@ -30,6 +31,7 @@ const App = () => {
           <Routes>
             <Route path="/" element={<Home/>}/>
             <Route path="/projects" element={<Projects/>}/>
+            <Route path="/project/:projectId" element={<Project />} />
             <Route path="/about" element={<About/>}/>
             <Route path='/login' element={<Login/>}/>
             <Route path='/register' element={<Register/>}/>
