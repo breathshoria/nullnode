@@ -49,7 +49,7 @@ const Project = () => {
                         <span className={'text-4xl sm:text-5xl font-medium font-mono'}>{project.title}</span>
                     </div>
                 </div>
-                <div className={'grid sm:grid-cols-2 gap-5 w-full min-h-screen'}>
+                <div className={'mt-2 grid sm:grid-cols-2 gap-5 w-full min-h-screen'}>
                     <div className={'bg-blue-700'}>
                         <span>content</span>
                     </div>

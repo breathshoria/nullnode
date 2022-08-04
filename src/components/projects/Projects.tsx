@@ -7,6 +7,7 @@ interface Project {
     title: string;
     description: string;
     logo: string;
+    onGoing: boolean;
 }
 
 const Projects = () => {
@@ -15,12 +16,14 @@ const Projects = () => {
     const fetchProjects = async () => {
         try {
             const response = await api.get('projects');
+            console.log(response)
             const mappedProjects = response.data.map((project: Project) => {
                 return {
                     id: project.id,
                     title: project.title,
                     description: project.description,
-                    logo: project.logo
+                    logo: project.logo,
+                    onGoing: project.onGoing,
                 }
             });
             setProjects(mappedProjects);
@@ -48,6 +51,7 @@ const Projects = () => {
                         title={project.title}
                         description={project.description}
                         logo={project.logo}
+                        onGoing={project.onGoing}
                     />
                     ))
                 }
