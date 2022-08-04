@@ -1,6 +1,6 @@
 import {
-  Routes,
-  Route, MemoryRouter,
+    Routes,
+    Route, BrowserRouter,
 } from "react-router-dom";
 import React from "react";
 import Home from "./components/Home"
@@ -26,17 +26,17 @@ const App = () => {
   }
   return (
       <div className="bg-gray-800 h-full text-white">
-        <MemoryRouter>
+        <BrowserRouter>
           <Nav />
           <Routes>
             <Route path="/" element={<Home/>}/>
             <Route path="/projects" element={<Projects/>}/>
-            <Route path="/project/:projectId" element={<Project />} />
+            <Route path="/projects/:projectId" element={<Project />} />
             <Route path="/about" element={<About/>}/>
             <Route path='/login' element={<Login/>}/>
             <Route path='/register' element={<Register/>}/>
           </Routes>
-        </MemoryRouter>
+        </BrowserRouter>
       </div>
   );
 }
