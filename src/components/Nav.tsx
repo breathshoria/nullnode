@@ -8,7 +8,6 @@ import React, {useRef, Fragment} from 'react'
 import useAuth from "../hooks/useAuth";
 
 const navigation = [
-    {name: 'Home', href: '/', authRequired: false},
     {name: 'Projects', href: '/projects', authRequired: false},
     {name: 'About', href: '/about', authRequired: false},
 ]
@@ -60,10 +59,10 @@ const Nav = () => {
                                     to={item.href}
                                     key={item.name}
                                     className={classNames(
-                                        currentPath === item.href
+                                        currentPath.includes(item.href)
                                             ? "bg-sky-700 text-white"
                                             : "text-gray-300 bg-gray-900 hover:text-white",
-                                        "px-3 py-2 inline-block text-sm hover:bg-sky-700"
+                                            "px-3 py-2 inline-block text-sm hover:bg-sky-700"
                                     )}
                                     aria-current={currentPath === item.href ? "page" : undefined}
                                 >
@@ -108,7 +107,7 @@ const Nav = () => {
                                             to={item.href}
                                             key={item.name}
                                             className={classNames(
-                                                currentPath === item.href
+                                                currentPath.includes(item.href)
                                                     ? "bg-sky-700 text-white"
                                                     : "text-gray-300 bg-gray-800 hover:text-white",
                                                 "px-3 py-2 rounded-md text-sm font-medium hover:bg-sky-700"
