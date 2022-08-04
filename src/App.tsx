@@ -13,6 +13,7 @@ import useAuth from "./hooks/useAuth";
 import RequireAuth from "./components/helpers/RequireAuth";
 import Loader from "./components/helpers/Loader";
 import Project from "./components/projects/Project";
+import Footer from "./components/Footer";
 
 const App = () => {
   const auth = useAuth()
@@ -25,7 +26,7 @@ const App = () => {
     )
   }
   return (
-      <div className="bg-gray-800 h-full text-white">
+      <div className="bg-gray-800 h-full w-full text-white">
         <BrowserRouter>
           <Nav />
           <Routes>
@@ -36,6 +37,7 @@ const App = () => {
             <Route path='/login' element={<Login/>}/>
             <Route path='/register' element={<Register/>}/>
           </Routes>
+          <Footer />
         </BrowserRouter>
       </div>
   );
