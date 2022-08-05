@@ -1,6 +1,6 @@
 import {
-  Routes,
-  Route, MemoryRouter,
+    Routes,
+    Route, BrowserRouter,
 } from "react-router-dom";
 import React from "react";
 import Home from "./components/Home"
@@ -12,6 +12,8 @@ import Login from "./components/authentication/Login";
 import useAuth from "./hooks/useAuth";
 import RequireAuth from "./components/helpers/RequireAuth";
 import Loader from "./components/helpers/Loader";
+import Project from "./components/projects/Project";
+import Footer from "./components/Footer";
 
 const App = () => {
   const auth = useAuth()
@@ -24,17 +26,19 @@ const App = () => {
     )
   }
   return (
-      <div className="bg-gray-800 h-full text-white">
-        <MemoryRouter>
+      <div className="bg-gray-800 h-full w-full text-white">
+        <BrowserRouter>
           <Nav />
           <Routes>
             <Route path="/" element={<Home/>}/>
             <Route path="/projects" element={<Projects/>}/>
+            <Route path="/projects/:projectId" element={<Project />} />
             <Route path="/about" element={<About/>}/>
             <Route path='/login' element={<Login/>}/>
             <Route path='/register' element={<Register/>}/>
           </Routes>
-        </MemoryRouter>
+          <Footer />
+        </BrowserRouter>
       </div>
   );
 }
