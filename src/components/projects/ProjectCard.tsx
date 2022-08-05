@@ -19,7 +19,7 @@ const ProjectCard = ({id, title, logo, description, onGoing}: Props) => {
                     <img className={'w-20 mx-auto rounded-full'} src={`${process.env.REACT_APP_API_DOMAIN}/${logo}`}/>
                     <span className={'py-2 inline-block w-full text-center'}>{title}</span>
                     <p className={'inline-block w-full text-start'}>{description}</p>
-                    <ProjectStatus className={'absolute -top-1 -right-1'} onGoing={onGoing} />
+                    <ProjectStatus className={'absolute top-1 right-1'} onGoing={onGoing} />
             </Link>
     )
 }
