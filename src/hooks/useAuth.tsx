@@ -27,9 +27,9 @@ const AuthContext = createContext<IAuthContext | null>(null);
 
 export const useAuthProvide = () => {
     const [error, setError] = useState<any>(null);
-    const [isLoading, setLoading] = useState<boolean>(false)
-    const [isAuthenticated, setAuthenticated] = useState<boolean>(false)
-    const [isAuthChecking, setIsAuthChecking] = useState<boolean>(false)
+    const [isLoading, setLoading] = useState(false)
+    const [isAuthenticated, setAuthenticated] = useState(false)
+    const [isAuthChecking, setIsAuthChecking] = useState(true)
     const [user, setUser] = useState<string | null>(null);
 
     const registerUser = async (userInput: RegisterInput, navigate: Function) => {
@@ -78,7 +78,6 @@ export const useAuthProvide = () => {
 
     useEffect(()=> {
         async function checkUser () {
-            setIsAuthChecking(true)
             const token = localStorage.getItem('accessToken')
             if (!token) {
                 setAuthenticated(false)
