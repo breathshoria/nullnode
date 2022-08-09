@@ -4,6 +4,7 @@ import api from "../../utils/axiosInterceptors";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faClose} from "@fortawesome/free-solid-svg-icons";
 
+
 type AddProjectType = Omit<ProjectType, "id" | "logoUrl">  & {
     logo: File | null;
 }
@@ -28,6 +29,7 @@ const AddProject = ({toggleAddForm}: Props) => {
         onGoing: false,
         guide: '',
     });
+    const [imgPreview, setImgPreview] = useState<string>('');
 
     const handleChange = (event: any) => {
         const {name, value, checked, files} = event.target;
@@ -38,7 +40,7 @@ const AddProject = ({toggleAddForm}: Props) => {
         }
         if (name === 'logo') {
             project.logo = files[0];
-            console.log(project)
+            setImgPreview(URL.createObjectURL(project.logo!))
             return setProject(project)
         }
         setProject({...project, [name]: value});
@@ -53,6 +55,7 @@ const AddProject = ({toggleAddForm}: Props) => {
         await api.post('projects/addProject', formData)
         toggleAddForm();
     }
+
     return (
         <div className={'min-h-screen p-5 flex flex-col items-center relative'}>
             <button className={'absolute top-0 right-0 p-5'} onClick={() => toggleAddForm()}>
@@ -75,13 +78,14 @@ const AddProject = ({toggleAddForm}: Props) => {
                 <div className={'pb-2'}>
                     <label>
                         <span className={'text-lg sm:text-base'}>Logo</span>
-                        <input
-                            className={'mt-2 block w-full text-sm rounded-lg border cursor-pointer text-gray-400 focus:outline-none bg-gray-700 border-gray-600 file:font-semibold file:rounded-lg file:border-0 file:p-1 file:m-1 file:bg-gray-500 file:cursor-pointer file:text-white'}
-                            type="file"
-                            name={'logo'}
-                            onChange={handleChange}
-                        />
+                        <img className={'w-20 rounded-full'} src={imgPreview} />
                     </label>
+                    <input
+                        className={'mt-2 block w-full text-sm rounded-lg border cursor-pointer text-gray-400 focus:outline-none bg-gray-700 border-gray-600 file:font-semibold file:rounded-lg file:border-0 file:p-1 file:m-1 file:bg-gray-500 file:cursor-pointer file:text-white'}
+                        type="file"
+                        name={'logo'}
+                        onChange={handleChange}
+                    />
                 </div>
                 <div className={'pt-2 pb-2'}>
                     <label>
