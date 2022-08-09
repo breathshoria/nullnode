@@ -3,6 +3,7 @@ import ProjectType from "../../types/project.interface";
 import api from "../../utils/axiosInterceptors";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faClose} from "@fortawesome/free-solid-svg-icons";
+import Loader from "../helpers/Loader";
 
 interface Props {
     toggleEditForm: Function;
@@ -33,7 +34,8 @@ const EditProject = ({toggleEditForm, projectId}: Props) => {
         guide: '',
     });
 
-    const [imgPreview, setImgPreview] = useState<string>('')
+    const [imgPreview, setImgPreview] = useState<string>('');
+    const [isLoading, setLoading] = useState(true);
 
     const fetchProject = async () => {
         const response = await api.get(`/projects/getProject/${projectId}`)
@@ -74,10 +76,18 @@ const EditProject = ({toggleEditForm, projectId}: Props) => {
     useEffect(() => {
         const populateForm = async () => {
             await fetchProject();
+            setLoading(false);
         }
         populateForm()
     }, [projectId])
 
+    if (isLoading) {
+        return (
+            <div className={'bg-gray-800 min-h-screen flex items-center justify-center'}>
+                <Loader className={'w-10 h-10'}></Loader>
+            </div>
+        )
+    }
     return (
         <div className={'min-h-screen p-5 flex flex-col items-center relative'}>
             <button className={'absolute top-0 right-0 p-5'} onClick={() => toggleEditForm()}>
