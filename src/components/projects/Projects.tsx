@@ -1,28 +1,23 @@
 import React, {useEffect, useState} from 'react';
 import ProjectCard from "./ProjectCard";
 import api from "../../utils/axiosInterceptors";
-
-interface Project {
-    id: number;
-    title: string;
-    description: string;
-    logo: string;
-    onGoing: boolean;
-}
+import ProjectType from '../../types/project.interface'
+import Loader from "../helpers/Loader";
 
 const Projects = () => {
-    const [projects, setProjects] = useState<Project[] | null>(null);
+    const [isLoading, setLoading] = useState(true);
+    const [projects, setProjects] = useState<ProjectType[] | null>(null);
 
     const fetchProjects = async () => {
         try {
             const response = await api.get('projects');
             console.log(response)
-            const mappedProjects = response.data.map((project: Project) => {
+            const mappedProjects = response.data.map((project: ProjectType) => {
                 return {
                     id: project.id,
                     title: project.title,
                     description: project.description,
-                    logo: project.logo,
+                    logoUrl: project.logoUrl,
                     onGoing: project.onGoing,
                 }
             });
@@ -33,13 +28,20 @@ const Projects = () => {
     }
 
     useEffect(() => {
-        async function fetchApi() {
+        const fetchApi = async() => {
             await fetchProjects()
+            setLoading(false);
         }
         fetchApi()
-    }, [])
+    }, [setLoading])
 
-
+    if (isLoading) {
+        return (
+            <div className={'bg-gray-800 min-h-screen flex items-center justify-center'}>
+                <Loader className={'w-10 h-10'}></Loader>
+            </div>
+        )
+    }
     return (
         <div className="min-h-screen">
             <span className={'text-2xl inline-block w-full text-center p-2'}>My projects</span>
@@ -50,7 +52,7 @@ const Projects = () => {
                         id={project.id}
                         title={project.title}
                         description={project.description}
-                        logo={project.logo}
+                        logoUrl={project.logoUrl}
                         onGoing={project.onGoing}
                     />
                     ))
