@@ -9,13 +9,13 @@ const ProjectStatus = ({onGoing, className}: Props) => {
     if (onGoing) {
         return (
             <div className={className}>
-                <div className={'rounded-lg bg-emerald-500 w-5 h-5'}></div>
+                <img className={'p-1 h-7'} src={'/signal-good.svg'}/>
             </div>
         )
     }
     return (
         <div className={className}>
-            <div className={'rounded-lg border-emerald-500 bg-gray-800 border-2 w-5 h-5'}></div>
+            <img className={'p-1 h-7'} src={'/signal-fair.svg'}/>
         </div>
     )
 }
