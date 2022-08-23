@@ -14,10 +14,11 @@ import RequireAuth from "./components/helpers/RequireAuth";
 import Loader from "./components/helpers/Loader";
 import Project from "./components/projects/Project";
 import Footer from "./components/Footer";
+import Dashboard from "./components/dashboard/Dashboard";
 
 const App = () => {
   const auth = useAuth()
-
+  console.log(auth)
   if(auth?.isAuthChecking) {
     return(
         <div className={'bg-gray-800 min-h-screen flex items-center justify-center'}>
@@ -36,6 +37,7 @@ const App = () => {
             <Route path="/about" element={<About/>}/>
             <Route path='/login' element={<Login/>}/>
             <Route path='/register' element={<Register/>}/>
+            <Route path={'/dashboard'} element={<RequireAuth><Dashboard /></RequireAuth>}/>
           </Routes>
           <Footer />
         </BrowserRouter>

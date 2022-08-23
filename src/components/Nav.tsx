@@ -10,6 +10,7 @@ import useAuth from "../hooks/useAuth";
 const navigation = [
     {name: 'Projects', href: '/projects', authRequired: false},
     {name: 'About', href: '/about', authRequired: false},
+    {name: 'Dashboard', href: '/dashboard', authRequired: true}
 ]
 
 
